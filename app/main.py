@@ -1,26 +1,24 @@
 from flask import Flask, jsonify
 from prometheus_client import start_http_server, Summary, Counter
-import uuid
 
-API_UUID = uuid.uuid4()
-REQUEST_TIME = Summary('request_processing_seconds', 'Time spent processing request')
+REQUEST_TIME = Summary(
+    'request_processing_seconds', 'Time spent processing request'
+)
 COUNTER_MAIN = Counter(
-    "main_page", "Main page hits", labelnames=["uuid", "code"]
+    "main_page", "Main page hits", labelnames=["code"]
 )
 TEST_MAIN = Counter(
-    "test_page", "Test page hits", labelnames=["uuid", "code"]
+    "test_page", "Test page hits", labelnames=["code"]
 )
 
-
 app = Flask(__name__)
-
 test_counter = 0
 
 
 @REQUEST_TIME.time()
 @app.route("/")
 def hello_world():
-    COUNTER_MAIN.labels(code="200", uuid=API_UUID).inc()
+    COUNTER_MAIN.labels(code="200").inc()
     return jsonify({"status": "ok"})
 
 
@@ -31,10 +29,10 @@ def get_metrics():
     test_counter += 1
 
     if test_counter % 3:
-        TEST_MAIN.labels(code="404", uuid=API_UUID).inc()
+        TEST_MAIN.labels(code="404").inc()
         return "Error", 404
 
-    TEST_MAIN.labels(code="200", uuid=API_UUID).inc()
+    TEST_MAIN.labels(code="200").inc()
     return "ok", 200
 
 
