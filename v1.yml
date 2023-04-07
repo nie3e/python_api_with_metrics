@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  api:
+    image: my_flask_api:latest
+#    build: app/.
+    deploy:
+      replicas: 3
+    ports:
+      - "9091:9091"
+    networks:
+      - myapi
+
+  prometheus:
+    image: my_prometheus:latest
+#    build: prometheus/.
+    deploy:
+      replicas: 1
+    ports:
+      - "9090:9090"
+    networks:
+      - myapi
+
+
+networks:
+  myapi:
+    name: my-api-network
