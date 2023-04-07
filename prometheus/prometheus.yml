@@ -1,5 +1,5 @@
 global:
-  scrape_interval: 1s
+  scrape_interval: 5s
 
 scrape_configs:
   - job_name: "api"
@@ -9,7 +9,4 @@ scrape_configs:
           - tasks.api
         type: A
         port: 8000
-        refresh_interval: 5s
-    metric_relabel_configs:
-      - action: labeldrop
-        regex: exported_instance
+        refresh_interval: 15s

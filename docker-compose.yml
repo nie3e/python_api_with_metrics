@@ -2,8 +2,8 @@ version: "3.7"
 
 services:
   api:
-    image: my_flask_api:latest
-#    build: app/.
+    image: python_api_with_metrics-api:latest
+    build: app/.
     deploy:
       replicas: 3
     ports:
@@ -12,8 +12,8 @@ services:
       - myapi
 
   prometheus:
-    image: my_prometheus:latest
-#    build: prometheus/.
+    image: python_api_with_metrics-prometheus:latest
+    build: prometheus/.
     deploy:
       replicas: 1
     ports:
