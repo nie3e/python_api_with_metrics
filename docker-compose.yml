@@ -21,6 +21,19 @@ services:
     networks:
       - myapi
 
+  grafana:
+    image: python_api_with_metrics-grafana:latest
+    build: grafana/.
+    deploy:
+      replicas: 1
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - myapi
+
+
 
 networks:
   myapi:
