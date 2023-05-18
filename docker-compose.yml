@@ -8,6 +8,8 @@ services:
       replicas: 3
     ports:
       - "9091:9091"
+    environment:
+      - PROMETHEUS_DISABLE_CREATED_SERIES=True
     networks:
       - myapi
 

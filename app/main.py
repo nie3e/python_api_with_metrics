@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+import prometheus_client
 from prometheus_client import make_wsgi_app, Summary, Counter
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
@@ -11,6 +12,9 @@ COUNTER_MAIN = Counter(
 TEST_MAIN = Counter(
     "test_page", "Test page hits", labelnames=["code"]
 )
+prometheus_client.REGISTRY.unregister(prometheus_client.GC_COLLECTOR)
+prometheus_client.REGISTRY.unregister(prometheus_client.PLATFORM_COLLECTOR)
+prometheus_client.REGISTRY.unregister(prometheus_client.PROCESS_COLLECTOR)
 
 app = Flask(__name__)
 app.wsgi_app = DispatcherMiddleware(
