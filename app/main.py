@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
-from prometheus_client import start_http_server, Summary, Counter
+from prometheus_client import make_wsgi_app, Summary, Counter
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
 REQUEST_TIME = Summary(
     'request_processing_seconds', 'Time spent processing request'
@@ -12,6 +13,10 @@ TEST_MAIN = Counter(
 )
 
 app = Flask(__name__)
+app.wsgi_app = DispatcherMiddleware(
+    app.wsgi_app,
+    {"/metrics": make_wsgi_app()}
+)
 test_counter = 0
 
 
@@ -37,5 +42,4 @@ def get_metrics():
 
 
 if __name__ == "__main__":
-    start_http_server(8000)
     app.run(host="0.0.0.0", port=9091)
